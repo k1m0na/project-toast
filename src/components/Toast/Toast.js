@@ -1,4 +1,5 @@
 import React from 'react';
+import IconButton from '../IconButton';
 import {
   AlertOctagon,
   AlertTriangle,
@@ -18,20 +19,26 @@ const ICONS_BY_VARIANT = {
   error: AlertOctagon,
 };
 
-function Toast() {
+function Toast({ messageInput, messageType, setIsVisible}) {
+  
   return (
-    <div className={`${styles.toast} ${styles.notice}`}>
+
+    <div className={`${styles.toast} ${styles[messageType]}`}>     
       <div className={styles.iconContainer}>
-        <Info size={24} />
+        <IconButton icon={ICONS_BY_VARIANT[messageType]} />
       </div>
       <p className={styles.content}>
-        16 photos have been uploaded
+        {messageInput}
       </p>
-      <button className={styles.closeButton}>
+      <button 
+        className={styles.closeButton}
+        onClick={() => setIsVisible(false)}  
+      >
         <X size={24} />
         <VisuallyHidden>Dismiss message</VisuallyHidden>
       </button>
     </div>
+    
   );
 }
 

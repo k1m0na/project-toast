@@ -1,7 +1,9 @@
 import React from 'react';
 
-function IconButton() {
-  return <div></div>;
+function IconButton( {icon: Icon} ) {
+  return (
+      <Icon size={24} />
+  );
 }
 
 export default IconButton;
