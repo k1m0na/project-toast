@@ -1,16 +1,29 @@
 import React from 'react';
 
 import Button from '../Button';
-import Toast from '../Toast';
+import ToastShelf from '../ToastShelf';
 
 import styles from './ToastPlayground.module.css';
 
 const VARIANT_OPTIONS = ['notice', 'warning', 'success', 'error'];
 
 function ToastPlayground() {
-  const [messageType, setMessageType] = React.useState(VARIANT_OPTIONS[0]);
+  const [variant, setVariant] = React.useState(VARIANT_OPTIONS[0]);
   const [messageInput, setMessageInput] = React.useState('To be or not to be');
-  const [isVisible, setIsVisible] = React.useState(false);
+  const [toasts, setToasts] = React.useState([
+    {
+      variant: variant,
+      message: messageInput,
+      id: crypto.randomUUID(),
+    },
+  ]);
+  const handleFormSubmission = event => {
+    const nextToasts = [...toasts];
+    event.preventDefault();
+    setToasts([...nextToasts, { variant: variant, message: messageInput, id: crypto.randomUUID() }]);
+    setVariant(VARIANT_OPTIONS[0]);
+    setMessageInput('');
+  };
 
   return (
     <div className={styles.wrapper}>
@@ -19,15 +32,13 @@ function ToastPlayground() {
         <h1>Toast Playground</h1>
       </header>
 
-      {isVisible && (
-        <Toast
-          messageType={messageType}
-          messageInput={messageInput}
-          setIsVisible={setIsVisible}
-        />
-      )}
 
-      <div className={styles.controlsWrapper}>
+      <ToastShelf toasts={toasts} setToasts={setToasts} />
+
+      <form
+        className={styles.controlsWrapper}
+        onSubmit={handleFormSubmission}
+      >
         <div className={styles.row}>
           <label
             htmlFor="messageInput"
@@ -61,9 +72,9 @@ function ToastPlayground() {
                   type="radio"
                   name="variant"
                   value={option}
-                  checked={option === messageType}
+                  checked={option === variant}
                   onChange={event => {
-                    setMessageType(event.target.value);
+                    setVariant(event.target.value);
                   }}
                 />
                 {option}
@@ -78,10 +89,10 @@ function ToastPlayground() {
           <div
             className={`${styles.inputWrapper} ${styles.radioWrapper}`}
           >
-            <Button setIsVisible={setIsVisible}>Pop Toast!</Button>
+            <Button>Pop Toast!</Button>
           </div>
         </div>
-      </div>
+      </form>
     </div>
   );
 }

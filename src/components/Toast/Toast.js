@@ -19,22 +19,23 @@ const ICONS_BY_VARIANT = {
   error: AlertOctagon,
 };
 
-function Toast({ messageInput, messageType, setIsVisible}) {
-  
+function Toast({ variant, toasts, setToasts, id, children }) {
+
+  const newToasts = [...toasts];
+    
   return (
 
-    <div className={`${styles.toast} ${styles[messageType]}`}>     
+    <div className={`${styles.toast} ${styles[variant]}`}>     
       <div className={styles.iconContainer}>
-        <IconButton icon={ICONS_BY_VARIANT[messageType]} />
+        <IconButton icon={ICONS_BY_VARIANT[variant]} />
       </div>
       <p className={styles.content}>
-        {messageInput}
+        {children}
       </p>
       <button 
         className={styles.closeButton}
-        onClick={() => setIsVisible(false)}  
       >
-        <X size={24} />
+        <X size={24} onClick={ () => setToasts(newToasts.filter( toast => toast.id !== id)) } />
         <VisuallyHidden>Dismiss message</VisuallyHidden>
       </button>
     </div>
