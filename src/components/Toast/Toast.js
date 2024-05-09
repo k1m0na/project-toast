@@ -21,7 +21,7 @@ const ICONS_BY_VARIANT = {
 
 function Toast({ variant, toasts, setToasts, id, children }) {
 
-  const newToasts = [...toasts];
+  const nextToasts = toasts.filter( toast => toast.id !== id);
     
   return (
 
@@ -35,7 +35,7 @@ function Toast({ variant, toasts, setToasts, id, children }) {
       <button 
         className={styles.closeButton}
       >
-        <X size={24} onClick={ () => setToasts(newToasts.filter( toast => toast.id !== id)) } />
+        <X size={24} onClick={ () => setToasts(nextToasts) } />
         <VisuallyHidden>Dismiss message</VisuallyHidden>
       </button>
     </div>

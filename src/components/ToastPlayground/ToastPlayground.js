@@ -8,19 +8,19 @@ import styles from './ToastPlayground.module.css';
 const VARIANT_OPTIONS = ['notice', 'warning', 'success', 'error'];
 
 function ToastPlayground() {
-  const [variant, setVariant] = React.useState(VARIANT_OPTIONS[0]);
-  const [messageInput, setMessageInput] = React.useState('To be or not to be');
+  const [currentVariant, setVariant] = React.useState(VARIANT_OPTIONS[0]);
+  const [messageInput, setMessageInput] = React.useState('');
   const [toasts, setToasts] = React.useState([
     {
-      variant: variant,
-      message: messageInput,
+      variant: 'warning',
+      message: 'To be or not to be',
       id: crypto.randomUUID(),
     },
   ]);
   const handleFormSubmission = event => {
     const nextToasts = [...toasts];
     event.preventDefault();
-    setToasts([...nextToasts, { variant: variant, message: messageInput, id: crypto.randomUUID() }]);
+    setToasts([...nextToasts, { variant: currentVariant, message: messageInput, id: crypto.randomUUID() }]);
     setVariant(VARIANT_OPTIONS[0]);
     setMessageInput('');
   };
@@ -72,7 +72,7 @@ function ToastPlayground() {
                   type="radio"
                   name="variant"
                   value={option}
-                  checked={option === variant}
+                  checked={option === currentVariant}
                   onChange={event => {
                     setVariant(event.target.value);
                   }}
